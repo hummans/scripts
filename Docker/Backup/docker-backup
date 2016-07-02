@@ -1,0 +1,15 @@
+#!/bin/bash
+CONTAINER_ID=$1
+SMB_PROPERTIES_FILE=$2
+. $SMB_PROPERTIES_FILE
+BACKUP_FILE_NAME="$CONTAINER_ID-$(date +%F_%R).tar.xz"
+echo "Docker $CONTAINER_ID Backup to //$SMB_HOST/$SMB_SHARE/$SMB_DIR/$BACKUP_FILE_NAME"
+docker run --rm \
+  --volumes-from $CONTAINER_ID \
+  -v /docker/backups/:/backup \
+  -e TAR_OPTS="--verbose" \
+  boombatower/docker-backup backup $BACKUP_FILE_NAME
+
+docker run --rm -v /docker/backups:/upload -e SMB_HOST=$SMB_HOST \
+        -e SMB_USERNAME=$SMB_USERNAME -e SMB_PASSWORD=$SMB_PASSWORD -e SMB_SHARE=$SMB_SHARE -e SMB_DIR=$SMB_DIR \
+        -e FILE_NAME=$BACKUP_FILE_NAME segator/smb-upload
