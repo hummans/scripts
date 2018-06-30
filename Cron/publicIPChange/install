@@ -8,7 +8,6 @@ echo "systemctl restart flannel" > /etc/publicIPChange/flannel
 cp script /usr/bin/publicip
 chmod +x /usr/bin/publicip
 crontab -l > mycron
-
-echo "*/5 * * * * /usr/bin/publicip" mycron
+echo "*/5 * * * * /usr/bin/publicip" > mycron
 crontab mycron
 rm mycron
