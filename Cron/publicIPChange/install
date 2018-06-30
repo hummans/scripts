@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Scripts will be executed if public IP changed
+mkdir -p /etc/publicIPChange/
+echo "systemctl restart flannel" > /etc/publicIPChange/flannel
+
+# Install script
+cp script /usr/bin/publicip
+chmod +x /usr/bin/publicip
+crontab -l > mycron
+
+echo "*/5 * * * * /usr/bin/publicip" mycron
+crontab mycron
+rm mycron

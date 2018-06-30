@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+if [ ! -f /tmp/publicip ]; then
+  ACTUAL_IP=$(curl -s ipinfo.io/ip)
+  echo $ACTUAL_IP > /tmp/publicip
+else
+  CURRENT_IP=$(cat /tmp/publicip)
+  ACTUAL_IP=$(curl -s ipinfo.io/ip)
+  if [ "$CURRENT_IP" != "$ACTUAL_IP" ]; then
+     echo "IP have been changed, BEFORE $CURRENT_IP  NOW $ACTUAL_IP"
+     echo $ACTUAL_IP > /tmp/publicip
+     for SCRIPT in /etc/publicIPChange/*
+        do
+        echo "Execute $SCRIPT"
+        $SCRIPT
+        done
+  fi
+fi
