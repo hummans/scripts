@@ -8,6 +8,6 @@ chmod 777 /etc/publicIPChange/flannel
 cp script /usr/bin/publicip
 chmod +x /usr/bin/publicip
 crontab -l > mycron
-echo "*/5 * * * * /usr/bin/publicip" > mycron
+echo "* * * * * /usr/bin/publicip" > mycron
 crontab mycron
 rm mycron
