@@ -3,7 +3,7 @@
 # Scripts will be executed if public IP changed
 mkdir -p /etc/publicIPChange/
 echo "systemctl restart flannel" > /etc/publicIPChange/flannel
-
+chmod 777 /etc/publicIPChange/flannel
 # Install script
 cp script /usr/bin/publicip
 chmod +x /usr/bin/publicip
